@@ -15,6 +15,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Favorite
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,9 +27,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -66,6 +72,7 @@ class MainActivity : ComponentActivity() {
                         .verticalScroll(rememberScrollState())
 
                 ) {
+                    val showCardDialog = remember{ mutableStateOf(false) } // 关于页面
 
                     CenterAlignedTopAppBar(
                         title = {
@@ -82,7 +89,7 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         actions = {
-                            IconButton(onClick = { /*TODO*/ }) {
+                            IconButton(onClick = { showCardDialog.value = true }) {
                                 Icon(
                                     imageVector = Icons.TwoTone.Favorite,
                                     contentDescription = null,
@@ -90,6 +97,22 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     )
+
+                    if (showCardDialog.value){
+                        AlertDialog(
+                            onDismissRequest = { showCardDialog.value = false },
+                            title = { Text("About") },
+                            text = { Text(text = "Maintainer: @lurenjia534", style = MaterialTheme.typography.titleSmall) },
+                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            titleContentColor = MaterialTheme.colorScheme.primaryContainer,
+                            textContentColor = MaterialTheme.colorScheme.primaryContainer,
+                            confirmButton = {
+                                TextButton(onClick = { showCardDialog.value = false }) {
+                                    Text("Ok")
+                                }
+
+                            })
+                    }
 
                     val androidVersion = Build.VERSION.RELEASE // Android版本
                     val sdkLevel = Build.VERSION.SDK_INT // SDK等级
