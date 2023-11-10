@@ -1,8 +1,11 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.media.MediaCodecList
 import android.os.Build
 import android.os.Bundle
+import android.view.Display
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +19,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -72,7 +74,7 @@ class MainActivity : ComponentActivity() {
                         .verticalScroll(rememberScrollState())
 
                 ) {
-                    val showCardDialog = remember{ mutableStateOf(false) } // 关于页面
+                    val showCardDialog = remember { mutableStateOf(false) } // 关于页面
 
                     CenterAlignedTopAppBar(
                         title = {
@@ -98,11 +100,16 @@ class MainActivity : ComponentActivity() {
                         }
                     )
 
-                    if (showCardDialog.value){
+                    if (showCardDialog.value) {
                         AlertDialog(
                             onDismissRequest = { showCardDialog.value = false },
                             title = { Text("About") },
-                            text = { Text(text = "Maintainer: @lurenjia534", style = MaterialTheme.typography.titleSmall) },
+                            text = {
+                                Text(
+                                    text = "Maintainer: @lurenjia534",
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                            },
                             containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
                             titleContentColor = MaterialTheme.colorScheme.primaryContainer,
                             textContentColor = MaterialTheme.colorScheme.primaryContainer,
@@ -206,6 +213,52 @@ class MainActivity : ComponentActivity() {
                                 codec.supportedTypes.toList()
                             }.distinct()
                     }
+                    // if HDR10
+                    fun getHDR(context: Context): Boolean {
+                        val windowManager =
+                            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                        val display = windowManager.defaultDisplay
+                        val hdrCapabilities = display.hdrCapabilities
+
+                        hdrCapabilities?.let {
+                            return it.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HDR10)
+                        }
+                        return false
+                    }
+
+                    fun getHdrPlus(context:Context):Boolean{
+                        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                        val display = windowManager.defaultDisplay
+                        val hdrCapabilities = display.hdrCapabilities
+
+                        hdrCapabilities?.let {
+                            return it.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HDR10_PLUS)
+                        }
+                        return false
+                    }
+
+                    fun getHLG(context:Context):Boolean{
+                        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                        val display = windowManager.defaultDisplay
+                        val hdrCapabilities = display.hdrCapabilities
+
+                        hdrCapabilities?.let {
+                            return it.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HLG)
+                        }
+                        return false
+                    }
+
+                    fun getDolbyVision(context:Context):Boolean{
+                        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                        val display = windowManager.defaultDisplay
+                        val hdrCapabilities = display.hdrCapabilities
+
+                        hdrCapabilities?.let {
+                            return it.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_DOLBY_VISION)
+                        }
+                        return false
+                    }
+
                     OutlinedCard(
                         onClick = { /* 点击事件处理 */ },
                         modifier = Modifier
@@ -232,11 +285,14 @@ class MainActivity : ComponentActivity() {
                                 text = "supported Decoder: ${getSupportedDecoderNames()}",
                                 style = MaterialTheme.typography.titleSmall
                             )
+                            Text(text = "HDR 10: ${getHDR(LocalContext.current)}", style = MaterialTheme.typography.titleSmall)
+                            Text(text = "HDR 10+: ${getHdrPlus(LocalContext.current)}", style = MaterialTheme.typography.titleSmall)
+                            Text(text = "HLG: ${getHLG(LocalContext.current)}", style = MaterialTheme.typography.titleSmall)
+                            Text(text = "DOLBY VISION: ${getDolbyVision(LocalContext.current)}", style = MaterialTheme.typography.titleSmall)
                         }
                     }
                 }
             }
-
         }
     }
 }
