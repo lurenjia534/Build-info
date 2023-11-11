@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
                     val fingerprint = Build.FINGERPRINT //唯一标识此构建的字符串
                     val product = Build.PRODUCT // 整体产品的名称。
                     val buildType = Build.TYPE // 构建类型
-                    val sku = Build.SKU // SKU 这里可能指设备唯一代号 比如Redmi Note 12 Turbo 代号: Marble
+                   // val sku = Build.SKU // SKU 这里可能指设备唯一代号 比如Redmi Note 12 Turbo 代号: Marble
 
                     OutlinedCard(
                         onClick = { /* 点击事件处理 */ },
@@ -205,7 +205,7 @@ class MainActivity : ComponentActivity() {
                                 text = "Product: $product",
                                 style = MaterialTheme.typography.titleSmall
                             )
-                            Text(text = "SKU: $sku", style = MaterialTheme.typography.titleSmall)
+                            // Text(text = "SKU: $sku", style = MaterialTheme.typography.titleSmall)
                             Text(
                                 text = "Build type : $buildType",
                                 style = MaterialTheme.typography.titleSmall
