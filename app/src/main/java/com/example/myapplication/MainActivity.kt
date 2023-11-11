@@ -120,7 +120,23 @@ class MainActivity : ComponentActivity() {
 
                             })
                     }
-
+                    OutlinedCard(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        shape = MaterialTheme.shapes.medium,
+                        colors = CardDefaults.outlinedCardColors(MaterialTheme.colorScheme.surface)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(24.dp).fillMaxWidth(),
+                            horizontalAlignment = Alignment.Start, // 水平对其方式
+                            verticalArrangement = Arrangement.spacedBy(8.dp) // 文本之间的间隔
+                        ) {
+                            Text(text = "Hardware", style = MaterialTheme.typography.titleLarge)
+                        }
+                    }
                     val androidVersion = Build.VERSION.RELEASE // Android版本
                     val sdkLevel = Build.VERSION.SDK_INT // SDK等级
                     val androidID = Build.ID // 设备ID
@@ -213,6 +229,7 @@ class MainActivity : ComponentActivity() {
                                 codec.supportedTypes.toList()
                             }.distinct()
                     }
+
                     // if HDR10
                     fun getHDR(context: Context): Boolean {
                         val windowManager =
@@ -226,8 +243,10 @@ class MainActivity : ComponentActivity() {
                         return false
                     }
 
-                    fun getHdrPlus(context:Context):Boolean{
-                        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                    // if HDR10+
+                    fun getHdrPlus(context: Context): Boolean {
+                        val windowManager =
+                            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
                         val display = windowManager.defaultDisplay
                         val hdrCapabilities = display.hdrCapabilities
 
@@ -237,8 +256,10 @@ class MainActivity : ComponentActivity() {
                         return false
                     }
 
-                    fun getHLG(context:Context):Boolean{
-                        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                    // if HLG
+                    fun getHLG(context: Context): Boolean {
+                        val windowManager =
+                            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
                         val display = windowManager.defaultDisplay
                         val hdrCapabilities = display.hdrCapabilities
 
@@ -248,8 +269,10 @@ class MainActivity : ComponentActivity() {
                         return false
                     }
 
-                    fun getDolbyVision(context:Context):Boolean{
-                        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                    // if Dolby Vision
+                    fun getDolbyVision(context: Context): Boolean {
+                        val windowManager =
+                            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
                         val display = windowManager.defaultDisplay
                         val hdrCapabilities = display.hdrCapabilities
 
@@ -276,30 +299,60 @@ class MainActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(text = "Media", style = MaterialTheme.typography.titleLarge)
-                            
+
                             Column {
-                                Text(text = "supported Encoder",style = MaterialTheme.typography.titleMedium)
-                                Text(text = "${getSupportedEncoderNames()}",style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    text = "supported Encoder",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = "${getSupportedEncoderNames()}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                             Column {
-                                Text(text = "supported Decoder", style = MaterialTheme.typography.titleMedium)
-                                Text(text = "${getSupportedDecoderNames()}",style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    text = "supported Decoder",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = "${getSupportedDecoderNames()}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                             Column {
                                 Text(text = "HDR 10", style = MaterialTheme.typography.titleMedium)
-                                Text(text = "${getHDR(LocalContext.current)}", style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    text = "${getHDR(LocalContext.current)}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                             Column {
-                                Text(text = "HDR 10+ ", style = MaterialTheme.typography.titleMedium)
-                                Text(text = "${getHdrPlus(LocalContext.current)}", style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    text = "HDR 10+ ",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = "${getHdrPlus(LocalContext.current)}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                             Column {
                                 Text(text = "HLG", style = MaterialTheme.typography.titleMedium)
-                                Text(text = "${getHLG(LocalContext.current)}", style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    text = "${getHLG(LocalContext.current)}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                             Column {
-                                Text(text = "DOLBY VISION", style = MaterialTheme.typography.titleMedium)
-                                Text(text = "${getDolbyVision(LocalContext.current)}",style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    text = "DOLBY VISION",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = "${getDolbyVision(LocalContext.current)}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                         }
                     }
