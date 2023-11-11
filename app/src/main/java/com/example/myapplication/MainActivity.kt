@@ -276,19 +276,31 @@ class MainActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(text = "Media", style = MaterialTheme.typography.titleLarge)
-
-                            Text(
-                                text = "supported Encoder: ${getSupportedEncoderNames()}",
-                                style = MaterialTheme.typography.titleSmall
-                            )
-                            Text(
-                                text = "supported Decoder: ${getSupportedDecoderNames()}",
-                                style = MaterialTheme.typography.titleSmall
-                            )
-                            Text(text = "HDR 10: ${getHDR(LocalContext.current)}", style = MaterialTheme.typography.titleSmall)
-                            Text(text = "HDR 10+: ${getHdrPlus(LocalContext.current)}", style = MaterialTheme.typography.titleSmall)
-                            Text(text = "HLG: ${getHLG(LocalContext.current)}", style = MaterialTheme.typography.titleSmall)
-                            Text(text = "DOLBY VISION: ${getDolbyVision(LocalContext.current)}", style = MaterialTheme.typography.titleSmall)
+                            
+                            Column {
+                                Text(text = "supported Encoder",style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${getSupportedEncoderNames()}",style = MaterialTheme.typography.bodyMedium)
+                            }
+                            Column {
+                                Text(text = "supported Decoder", style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${getSupportedDecoderNames()}",style = MaterialTheme.typography.bodyMedium)
+                            }
+                            Column {
+                                Text(text = "HDR 10", style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${getHDR(LocalContext.current)}", style = MaterialTheme.typography.bodyMedium)
+                            }
+                            Column {
+                                Text(text = "HDR 10+ ", style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${getHdrPlus(LocalContext.current)}", style = MaterialTheme.typography.bodyMedium)
+                            }
+                            Column {
+                                Text(text = "HLG", style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${getHLG(LocalContext.current)}", style = MaterialTheme.typography.bodyMedium)
+                            }
+                            Column {
+                                Text(text = "DOLBY VISION", style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${getDolbyVision(LocalContext.current)}",style = MaterialTheme.typography.bodyMedium)
+                            }
                         }
                     }
                 }
