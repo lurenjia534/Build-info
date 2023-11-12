@@ -8,13 +8,19 @@ import android.view.Display
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Favorite
@@ -24,6 +30,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
@@ -36,8 +43,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -91,7 +100,11 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         actions = {
-                            IconButton(onClick = { showCardDialog.value = true }) {
+                            IconButton(
+                                onClick = { showCardDialog.value = true },
+                                colors = IconButtonDefaults.iconButtonColors(MaterialTheme.colorScheme.surface),
+                                modifier = Modifier.clip(RoundedCornerShape(64.dp))
+                            ) {
                                 Icon(
                                     imageVector = Icons.TwoTone.Favorite,
                                     contentDescription = null,
@@ -103,23 +116,41 @@ class MainActivity : ComponentActivity() {
                     if (showCardDialog.value) {
                         AlertDialog(
                             onDismissRequest = { showCardDialog.value = false },
-                            title = { Text("About") },
+                            title = { Text("About", style = MaterialTheme.typography.titleSmall) },
                             text = {
-                                Text(
-                                    text = "Maintainer: @lurenjia534",
-                                    style = MaterialTheme.typography.titleSmall
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically, // 行容器中内容垂直居中
+                                    horizontalArrangement = Arrangement.Center // 行容器中内容水平居中
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.unnamed),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(50.dp)
+                                            .clip(CircleShape)
+
+                                    )
+                                    Spacer(modifier = Modifier.padding(5.dp))
+                                    Text(
+                                        text = "Maintainer: @lurenjia534",
+                                        style = MaterialTheme.typography.bodySmall,
+
+                                        )
+                                }
                             },
-                            containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            titleContentColor = MaterialTheme.colorScheme.primaryContainer,
-                            textContentColor = MaterialTheme.colorScheme.primaryContainer,
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            textContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                             confirmButton = {
                                 TextButton(onClick = { showCardDialog.value = false }) {
-                                    Text("Ok")
+                                    Text("Ok", style = MaterialTheme.typography.bodyMedium)
                                 }
 
                             })
                     }
+
+                    val hardware = Build.SOC_MODEL
+
                     OutlinedCard(
                         onClick = { /*TODO*/ },
                         modifier = Modifier
@@ -130,11 +161,20 @@ class MainActivity : ComponentActivity() {
                         colors = CardDefaults.outlinedCardColors(MaterialTheme.colorScheme.surface)
                     ) {
                         Column(
-                            modifier = Modifier.padding(24.dp).fillMaxWidth(),
+                            modifier = Modifier
+                                .padding(24.dp)
+                                .fillMaxWidth(),
                             horizontalAlignment = Alignment.Start, // 水平对其方式
                             verticalArrangement = Arrangement.spacedBy(8.dp) // 文本之间的间隔
                         ) {
                             Text(text = "Hardware", style = MaterialTheme.typography.titleLarge)
+                            Column {
+                                Text(
+                                    text = "Hardware",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(text = "$hardware")
+                            }
                         }
                     }
                     val androidVersion = Build.VERSION.RELEASE // Android版本
@@ -147,7 +187,7 @@ class MainActivity : ComponentActivity() {
                     val fingerprint = Build.FINGERPRINT //唯一标识此构建的字符串
                     val product = Build.PRODUCT // 整体产品的名称。
                     val buildType = Build.TYPE // 构建类型
-                   // val sku = Build.SKU // SKU 这里可能指设备唯一代号 比如Redmi Note 12 Turbo 代号: Marble
+                    // val sku = Build.SKU // SKU 这里可能指设备唯一代号 比如Redmi Note 12 Turbo 代号: Marble
 
                     OutlinedCard(
                         onClick = { /* 点击事件处理 */ },
