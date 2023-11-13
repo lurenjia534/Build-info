@@ -50,6 +50,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,12 +119,13 @@ class MainActivity : ComponentActivity() {
                     if (showCardDialog.value) {
                         AlertDialog(
                             onDismissRequest = { showCardDialog.value = false },
-                            title = { Text("About", style = MaterialTheme.typography.titleSmall) },
+                            title = { Text("About", style = MaterialTheme.typography.titleMedium) },
                             text = {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically, // 行容器中内容垂直居中
                                     horizontalArrangement = Arrangement.Center // 行容器中内容水平居中
                                 ) {
+                                    Spacer(modifier = Modifier.padding(5.dp))
                                     Image(
                                         painter = painterResource(id = R.drawable.unnamed),
                                         contentDescription = null,
@@ -149,7 +153,31 @@ class MainActivity : ComponentActivity() {
                             })
                     }
 
+                    fun getCpuInfo(): String {
+                        try {
+                            val process = Runtime.getRuntime().exec("cat /proc/cpuinfo")
+                            val inputStream = process.inputStream
+                            val reader = BufferedReader(InputStreamReader(inputStream))
+
+                            val stringBuilder = StringBuilder()
+                            var line: String?
+
+                            while (reader.readLine().also { line = it } != null) {
+                                stringBuilder.append(line).append("\n")
+                            }
+
+                            inputStream.close()
+
+                            return stringBuilder.toString()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                            return "Unable to read CPU info:${e.printStackTrace()}"
+                        }
+                    }
+
                     val hardware = Build.SOC_MODEL
+
+                    val cpuInfo = remember { mutableStateOf(false) }
 
                     OutlinedCard(
                         onClick = { /*TODO*/ },
@@ -170,13 +198,41 @@ class MainActivity : ComponentActivity() {
                             Text(text = "Hardware", style = MaterialTheme.typography.titleLarge)
                             Column {
                                 Text(
-                                    text = "Hardware",
+                                    text = "Soc model",
                                     style = MaterialTheme.typography.titleMedium
                                 )
-                                Text(text = "$hardware")
+                                Text(text = hardware)
+                            }
+                            Column {
+                                Text(
+                                    text = "Click cpu Info",
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                                TextButton(onClick = { cpuInfo.value = true }) {
+                                    Text(text = "CPU Info")
+                                }
                             }
                         }
                     }
+
+                    if (cpuInfo.value) {
+                        AlertDialog(onDismissRequest = { cpuInfo.value = false },
+                            confirmButton = { /*TODO*/ },
+                            title = {
+                                Text(
+                                    text = "Cpu Info",
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                            },
+                            text = {
+                                Row(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                                    Spacer(modifier = Modifier.padding(5.dp))
+                                    Text(text = getCpuInfo())
+                                }
+                            }
+                        )
+                    }
+
                     val androidVersion = Build.VERSION.RELEASE // Android版本
                     val sdkLevel = Build.VERSION.SDK_INT // SDK等级
                     val androidID = Build.ID // 设备ID
