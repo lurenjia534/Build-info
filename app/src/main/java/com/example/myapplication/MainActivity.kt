@@ -45,8 +45,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -87,7 +90,6 @@ class MainActivity : ComponentActivity() {
 
                 ) {
                     val showCardDialog = remember { mutableStateOf(false) } // 关于页面
-
                     CenterAlignedTopAppBar(
                         title = {
                             Text(
@@ -179,6 +181,10 @@ class MainActivity : ComponentActivity() {
 
                     val cpuInfo = remember { mutableStateOf(false) }
 
+                    fun copyText(text: String, clipboardManager: ClipboardManager) {
+                        clipboardManager.setText(AnnotatedString(text))
+                    }
+
                     OutlinedCard(
                         onClick = { /*TODO*/ },
                         modifier = Modifier
@@ -206,7 +212,7 @@ class MainActivity : ComponentActivity() {
                             Column {
                                 Text(
                                     text = "Click cpu Info",
-                                    style = MaterialTheme.typography.titleLarge
+                                    style = MaterialTheme.typography.titleMedium
                                 )
                                 TextButton(onClick = { cpuInfo.value = true }) {
                                     Text(text = "CPU Info")
@@ -216,8 +222,9 @@ class MainActivity : ComponentActivity() {
                     }
 
                     if (cpuInfo.value) {
-                        AlertDialog(onDismissRequest = { cpuInfo.value = false },
-                            confirmButton = { /*TODO*/ },
+                        val clipboardManager = LocalClipboardManager.current
+                        AlertDialog(
+                            onDismissRequest = { cpuInfo.value = false },
                             title = {
                                 Text(
                                     text = "Cpu Info",
@@ -229,7 +236,19 @@ class MainActivity : ComponentActivity() {
                                     Spacer(modifier = Modifier.padding(5.dp))
                                     Text(text = getCpuInfo())
                                 }
-                            }
+                            },
+                            confirmButton = {
+                                Row {
+                                    TextButton(onClick = {
+                                        copyText(getCpuInfo(), clipboardManager)
+                                    }) {
+                                        Text("Copy", style = MaterialTheme.typography.bodyMedium)
+                                    }
+                                    TextButton(onClick = { cpuInfo.value = false }) {
+                                        Text("Ok", style = MaterialTheme.typography.bodyMedium)
+                                    }
+                                }
+                            },
                         )
                     }
 
@@ -246,7 +265,7 @@ class MainActivity : ComponentActivity() {
                     // val sku = Build.SKU // SKU 这里可能指设备唯一代号 比如Redmi Note 12 Turbo 代号: Marble
 
                     OutlinedCard(
-                        onClick = { /* 点击事件处理 */ },
+                        onClick = { },
                         modifier = Modifier
                             .padding(16.dp) // 外部间距
                             .fillMaxWidth() // 宽度填充父容器，但不是高度
