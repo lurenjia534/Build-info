@@ -424,7 +424,7 @@ class MainActivity : ComponentActivity() {
 
                     // if Dolby Vision
                     fun getDolbyVision(context: Context): Boolean {
-                        if (Build.VERSION.SDK_INT <= 34) {
+                        if (Build.VERSION.SDK_INT >= 34) {
                             val display = context.display
                             display?.let {
                                 val mode = it.mode
