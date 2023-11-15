@@ -5,7 +5,6 @@ import android.media.MediaCodecList
 import android.os.Build
 import android.os.Bundle
 import android.view.Display
-import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -264,6 +263,21 @@ class MainActivity : ComponentActivity() {
                     val buildType = Build.TYPE // 构建类型
                     // val sku = Build.SKU // SKU 这里可能指设备唯一代号 比如Redmi Note 12 Turbo 代号: Marble
 
+                    fun copySystemBasicInfoCard(
+                        androidString: String,
+                        sdkLevel: String,
+                        androidID: String,
+                        brand: String,
+                        manufacturer: String,
+                        model: String,
+                        board: String,
+                        fingerprint: String,
+                        product: String,
+                        buildType: String,
+                    ): String {
+                        return "true"
+                    }
+
                     OutlinedCard(
                         onClick = { },
                         modifier = Modifier
@@ -347,52 +361,83 @@ class MainActivity : ComponentActivity() {
 
                     // if HDR10
                     fun getHDR(context: Context): Boolean {
-                        val windowManager =
-                            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                        val display = windowManager.defaultDisplay
-                        val hdrCapabilities = display.hdrCapabilities
-
-                        hdrCapabilities?.let {
-                            return it.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HDR10)
+                        if (Build.VERSION.SDK_INT >= 34) {
+                            val display = context.display
+                            display?.let {
+                                val mode = it.mode
+                                return mode.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HDR10)
+                            }
+                            return false
+                        } else {
+                            val display = context.display
+                            display?.let {
+                                val hdrCapabilities = it.hdrCapabilities
+                                hdrCapabilities?.let { capabilities ->
+                                    return capabilities.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HDR10)
+                                }
+                            }
+                            return false
                         }
                         return false
                     }
 
-                    // if HDR10+
+                    // if HDR10 Plus
                     fun getHdrPlus(context: Context): Boolean {
-                        val windowManager =
-                            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                        val display = windowManager.defaultDisplay
-                        val hdrCapabilities = display.hdrCapabilities
-
-                        hdrCapabilities?.let {
-                            return it.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HDR10_PLUS)
+                        if (Build.VERSION.SDK_INT >= 34) {
+                            val display = context.display
+                            display?.let {
+                                val mode = it.mode
+                                return mode.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HDR10_PLUS)
+                            }
+                            return false
+                        } else {
+                            val display = context.display
+                            display?.let {
+                                val hdrCapabilities = it.hdrCapabilities
+                                hdrCapabilities?.let { capabilities ->
+                                    return capabilities.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HDR10_PLUS)
+                                }
+                            }
+                            return false
                         }
-                        return false
                     }
 
                     // if HLG
                     fun getHLG(context: Context): Boolean {
-                        val windowManager =
-                            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                        val display = windowManager.defaultDisplay
-                        val hdrCapabilities = display.hdrCapabilities
-
-                        hdrCapabilities?.let {
-                            return it.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HLG)
+                        if (Build.VERSION.SDK_INT >= 34) {
+                            val display = context.display
+                            display?.let {
+                                val mode = it.mode
+                                return mode.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HLG)
+                            }
+                        } else {
+                            val display = context.display
+                            display?.let {
+                                val hdrCapabilities = it.hdrCapabilities
+                                hdrCapabilities?.let { capabilities ->
+                                    return capabilities.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_HLG)
+                                }
+                            }
                         }
                         return false
                     }
 
                     // if Dolby Vision
                     fun getDolbyVision(context: Context): Boolean {
-                        val windowManager =
-                            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                        val display = windowManager.defaultDisplay
-                        val hdrCapabilities = display.hdrCapabilities
-
-                        hdrCapabilities?.let {
-                            return it.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_DOLBY_VISION)
+                        if (Build.VERSION.SDK_INT <= 34) {
+                            val display = context.display
+                            display?.let {
+                                val mode = it.mode
+                                return mode.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_DOLBY_VISION)
+                            }
+                        } else {
+                            val display = context.display
+                            display?.let {
+                                val hdrCapabilities = it.hdrCapabilities
+                                hdrCapabilities?.let { capabilities ->
+                                    return capabilities.supportedHdrTypes.contains(Display.HdrCapabilities.HDR_TYPE_DOLBY_VISION)
+                                }
+                            }
                         }
                         return false
                     }
