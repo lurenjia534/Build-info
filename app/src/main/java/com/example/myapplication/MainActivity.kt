@@ -264,8 +264,8 @@ class MainActivity : ComponentActivity() {
                     // val sku = Build.SKU // SKU 这里可能指设备唯一代号 比如Redmi Note 12 Turbo 代号: Marble
 
                     fun copySystemBasicInfoCard(
-                        androidString: String,
-                        sdkLevel: String,
+                        androidVersion: String,
+                        sdklevel: Int,
                         androidID: String,
                         brand: String,
                         manufacturer: String,
@@ -275,11 +275,34 @@ class MainActivity : ComponentActivity() {
                         product: String,
                         buildType: String,
                     ): String {
-                        return "true"
+                        return "System Basic Info\n" +
+                                "Android version: $androidVersion\n" +
+                                "Android Level: $sdklevel\n" +
+                                "Android Build ID: $androidID\n" +
+                                "Brand: $brand\n" +
+                                "Manufacturer: $manufacturer\n" +
+                                "Model: $model\n" +
+                                "Board: $board\n" +
+                                "Build fingerprint: $fingerprint\n" +
+                                "Product: $product\n" +
+                                "Build type : $buildType"
                     }
 
+                    fun copySystemInfo(text:String,clipboardManager: ClipboardManager){
+                        clipboardManager.setText(AnnotatedString(text))
+                    }
+                    val clipboardManager = LocalClipboardManager.current
                     OutlinedCard(
-                        onClick = { },
+                        onClick = { copySystemInfo(copySystemBasicInfoCard(androidVersion,
+                            sdkLevel,
+                            androidID,
+                            brand,
+                            manufacturer,
+                            model,
+                            board,
+                            fingerprint,
+                            product,
+                            buildType), clipboardManager) },
                         modifier = Modifier
                             .padding(16.dp) // 外部间距
                             .fillMaxWidth() // 宽度填充父容器，但不是高度
@@ -516,6 +539,21 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
+                    
+                    OutlinedCard(
+                        onClick = { /* 点击事件处理 */ },
+                        modifier = Modifier
+                            .padding(16.dp) // 外部间距
+                            .fillMaxWidth() // 宽度填充父容器，但不是高度
+                            .wrapContentHeight(), // 高度包裹内容
+                        shape = MaterialTheme.shapes.medium,
+                        colors = CardDefaults.outlinedCardColors(MaterialTheme.colorScheme.surface)
+                    ) {
+                        Column(modifier = Modifier.padding(24.dp)) {
+                            Text(text = "Widevine", style = MaterialTheme.typography.titleLarge)
+                        }
+                    }
+                    
                 }
             }
         }
