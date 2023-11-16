@@ -177,8 +177,13 @@ class MainActivity : ComponentActivity() {
                     }
 
                     val hardware = Build.SOC_MODEL
-
+                    val abis = Build.SUPPORTED_ABIS.joinToString ( separator = ", " )
                     val cpuInfo = remember { mutableStateOf(false) }
+
+                    fun get32abis():Boolean{
+                        val abis32 = Build.SUPPORTED_32_BIT_ABIS.joinToString ( separator = ", " )
+                        return abis32 != null
+                    }
 
                     fun copyText(text: String, clipboardManager: ClipboardManager) {
                         clipboardManager.setText(AnnotatedString(text))
@@ -216,6 +221,18 @@ class MainActivity : ComponentActivity() {
                                 TextButton(onClick = { cpuInfo.value = true }) {
                                     Text(text = "CPU Info")
                                 }
+                            }
+                            Column {
+                                Text(text = "Core number", style = MaterialTheme.typography.titleMedium)
+                                Text(text = " null ", style = MaterialTheme.typography.bodyMedium)
+                            }
+                            Column {
+                                Text(text = "support ABIs", style = MaterialTheme.typography.titleMedium)
+                                Text(text = "$abis", style = MaterialTheme.typography.bodyMedium)
+                            }
+                            Column {
+                                Text(text = "support 32 ABI",style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${get32abis()}")
                             }
                         }
                     }
