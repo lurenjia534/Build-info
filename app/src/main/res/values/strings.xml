@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Build info</string>
+    <string name="Device_info">Device info</string>
 </resources>
