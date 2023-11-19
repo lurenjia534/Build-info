@@ -1,4 +1,25 @@
 <resources>
     <string name="app_name">Build info</string>
     <string name="Device_info">Device info</string>
+    <string name="About">About</string>
+    <string name="Maintainer">Maintainer: @lurenjia534</string>
+    <string name="Hardware">Hardware</string>
+    <string name="Soc_model">Soc model</string>
+    <string name="cpuinfo">Click cpu info</string>
+    <string name="core_number">Core number</string>
+    <string name="support_ABIs">support ABIs</string>
+    <string name="abis32">support 32 ABI</string>
+    <string name="System_Basic_Info">System Basic Info</string>
+    <string name="Android_version">Android version: %1$s</string>
+    <string name="Android_Level">Android Level: %1$s</string>
+    <string name="Android_Build_ID">Android Build ID: %1$s</string>
+    <string name="Brand">Brand: %1$s</string>
+    <string name="Manufacturer">Manufacturer: %1$s</string>
+    <string name="Model">Model: %1$s</string>
+    <string name="Board">Board: %1$s</string>
+    <string name="Build_fingerprint">Build fingerprint: %1$s</string>
+    <string name="Product">Product: %1$s</string>
+    <string name="SKU">SKU: %1$s</string>
+    <string name="Build_type">Build type: %1$s</string>
+    <string name="Media">Media</string>
 </resources>

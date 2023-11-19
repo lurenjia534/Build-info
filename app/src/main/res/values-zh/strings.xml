@@ -2,4 +2,25 @@
 <resources>
     <string name="app_name">Build info</string>
     <string name="Device_info">设备信息</string>
+    <string name="About">关于</string>
+    <string name="Maintainer">维护者: @lurenjia534</string>
+    <string name="Hardware">硬件</string>
+    <string name="Soc_model">Soc名称</string>
+    <string name="cpuinfo">点击查看CPU信息</string>
+    <string name="core_number">CPU核心数</string>
+    <string name="support_ABIs">支持的ABIS</string>
+    <string name="abis32">是否支持32位ABI</string>
+    <string name="System_Basic_Info">系统基本信息</string>
+    <string name="Android_version">Android 版本: %1$s</string>
+    <string name="Android_Level">Android 等级: %1$s</string>
+    <string name="Android_Build_ID">Android 构建ID: %1$s</string>
+    <string name="Brand">品牌: %1$s</string>
+    <string name="Manufacturer">制造商: %1$s</string>
+    <string name="Model">型号: %1$s</string>
+    <string name="Board">板: %1$s</string>
+    <string name="Build_fingerprint">构建指纹: %1$s</string>
+    <string name="Product">产品: %1$s</string>
+    <string name="SKU">SKU: %1$s</string>
+    <string name="Build_type">构建类型: %1$s</string>
+    <string name="Media">媒体</string>
 </resources>

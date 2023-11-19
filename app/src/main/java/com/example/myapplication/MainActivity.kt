@@ -121,7 +121,12 @@ class MainActivity : ComponentActivity() {
                     if (showCardDialog.value) {
                         AlertDialog(
                             onDismissRequest = { showCardDialog.value = false },
-                            title = { Text("About", style = MaterialTheme.typography.titleMedium) },
+                            title = {
+                                Text(
+                                    stringResource(id = R.string.About),
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                            },
                             text = {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically, // 行容器中内容垂直居中
@@ -138,7 +143,7 @@ class MainActivity : ComponentActivity() {
                                     )
                                     Spacer(modifier = Modifier.padding(5.dp))
                                     Text(
-                                        text = "Maintainer: @lurenjia534",
+                                        text = stringResource(id = R.string.Maintainer),
                                         style = MaterialTheme.typography.bodySmall,
 
                                         )
@@ -177,12 +182,12 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
-                    val hardware = Build.SOC_MODEL
-                    val abis = Build.SUPPORTED_ABIS.joinToString ( separator = ", " )
+                    val SOC_MODEL = Build.SOC_MODEL
+                    val abis = Build.SUPPORTED_ABIS.joinToString(separator = ", ")
                     val cpuInfo = remember { mutableStateOf(false) }
 
-                    fun get32abis():Boolean{
-                        val abis32 = Build.SUPPORTED_32_BIT_ABIS.joinToString ( separator = ", " )
+                    fun get32abis(): Boolean {
+                        val abis32 = Build.SUPPORTED_32_BIT_ABIS.joinToString(separator = ", ")
                         return abis32 != null
                     }
 
@@ -206,17 +211,20 @@ class MainActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.Start, // 水平对其方式
                             verticalArrangement = Arrangement.spacedBy(8.dp) // 文本之间的间隔
                         ) {
-                            Text(text = "Hardware", style = MaterialTheme.typography.titleLarge)
+                            Text(
+                                text = stringResource(id = R.string.Hardware),
+                                style = MaterialTheme.typography.titleLarge
+                            )
                             Column {
                                 Text(
-                                    text = "Soc model",
+                                    text = stringResource(id = R.string.Soc_model),
                                     style = MaterialTheme.typography.titleMedium
                                 )
-                                Text(text = hardware)
+                                Text(text = SOC_MODEL)
                             }
                             Column {
                                 Text(
-                                    text = "Click cpu Info",
+                                    text = stringResource(id = R.string.cpuinfo),
                                     style = MaterialTheme.typography.titleMedium
                                 )
                                 TextButton(onClick = { cpuInfo.value = true }) {
@@ -224,15 +232,24 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             Column {
-                                Text(text = "Core number", style = MaterialTheme.typography.titleMedium)
+                                Text(
+                                    text = stringResource(id = R.string.core_number),
+                                    style = MaterialTheme.typography.titleMedium
+                                )
                                 Text(text = " null ", style = MaterialTheme.typography.bodyMedium)
                             }
                             Column {
-                                Text(text = "support ABIs", style = MaterialTheme.typography.titleMedium)
+                                Text(
+                                    text = stringResource(id = R.string.support_ABIs),
+                                    style = MaterialTheme.typography.titleMedium
+                                )
                                 Text(text = "$abis", style = MaterialTheme.typography.bodyMedium)
                             }
                             Column {
-                                Text(text = "support 32 ABI",style = MaterialTheme.typography.titleMedium)
+                                Text(
+                                    text = stringResource(id = R.string.abis32),
+                                    style = MaterialTheme.typography.titleMedium
+                                )
                                 Text(text = "${get32abis()}")
                             }
                         }
@@ -279,7 +296,7 @@ class MainActivity : ComponentActivity() {
                     val fingerprint = Build.FINGERPRINT //唯一标识此构建的字符串
                     val product = Build.PRODUCT // 整体产品的名称。
                     val buildType = Build.TYPE // 构建类型
-                    // val sku = Build.SKU // SKU 这里可能指设备唯一代号 比如Redmi Note 12 Turbo 代号: Marble
+                    val sku = Build.SKU // SKU 这里指设备唯一代号 比如Redmi Note 12 Turbo 代号: Marble
 
                     fun copySystemBasicInfoCard(
                         androidVersion: String,
@@ -306,21 +323,28 @@ class MainActivity : ComponentActivity() {
                                 "Build type : $buildType"
                     }
 
-                    fun copySystemInfo(text:String,clipboardManager: ClipboardManager){
+                    fun copySystemInfo(text: String, clipboardManager: ClipboardManager) {
                         clipboardManager.setText(AnnotatedString(text))
                     }
+
                     val clipboardManager = LocalClipboardManager.current
                     OutlinedCard(
-                        onClick = { copySystemInfo(copySystemBasicInfoCard(androidVersion,
-                            sdkLevel,
-                            androidID,
-                            brand,
-                            manufacturer,
-                            model,
-                            board,
-                            fingerprint,
-                            product,
-                            buildType), clipboardManager) },
+                        onClick = {
+                            copySystemInfo(
+                                copySystemBasicInfoCard(
+                                    androidVersion,
+                                    sdkLevel,
+                                    androidID,
+                                    brand,
+                                    manufacturer,
+                                    model,
+                                    board,
+                                    fingerprint,
+                                    product,
+                                    buildType,
+                                ), clipboardManager
+                            )
+                        },
                         modifier = Modifier
                             .padding(16.dp) // 外部间距
                             .fillMaxWidth() // 宽度填充父容器，但不是高度
@@ -336,48 +360,54 @@ class MainActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.spacedBy(8.dp) // 文本之间的间隔
                         ) {
                             Text(
-                                text = "System Basic Info",
+                                text = stringResource(id = R.string.System_Basic_Info),
                                 style = MaterialTheme.typography.titleLarge
                             )
                             Text(
-                                text = "Android version: $androidVersion",
+                                text = stringResource(
+                                    id = R.string.Android_version,
+                                    androidVersion
+                                ),
                                 style = MaterialTheme.typography.titleSmall
                             )
                             Text(
-                                text = "Android Level: $sdkLevel",
+                                text = stringResource(id = R.string.Android_Level, sdkLevel),
                                 style = MaterialTheme.typography.titleSmall
                             )
                             Text(
-                                text = "Android Build ID: $androidID",
+                                text = stringResource(id = R.string.Android_Build_ID, androidID),
                                 style = MaterialTheme.typography.titleSmall
                             )
                             Text(
-                                text = "Brand: $brand",
+                                text = stringResource(id = R.string.Brand, brand),
                                 style = MaterialTheme.typography.titleSmall
                             )
                             Text(
-                                text = "Manufacturer: $manufacturer",
+                                text = stringResource(id = R.string.Manufacturer, manufacturer),
                                 style = MaterialTheme.typography.titleSmall
                             )
                             Text(
-                                text = "Model: $model",
+                                text = stringResource(id = R.string.Model, model),
                                 style = MaterialTheme.typography.titleSmall
                             )
                             Text(
-                                text = "Board: $board",
+                                text = stringResource(id = R.string.Board, board),
                                 style = MaterialTheme.typography.titleSmall
                             )
                             Text(
-                                text = "Build fingerprint: $fingerprint",
+                                text = stringResource(id = R.string.Build_fingerprint, fingerprint),
                                 style = MaterialTheme.typography.titleSmall
                             )
                             Text(
-                                text = "Product: $product",
+                                text = stringResource(id = R.string.Product, product),
                                 style = MaterialTheme.typography.titleSmall
                             )
-                            // Text(text = "SKU: $sku", style = MaterialTheme.typography.titleSmall)
                             Text(
-                                text = "Build type : $buildType",
+                                text = stringResource(id = R.string.SKU, sku),
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                            Text(
+                                text = stringResource(id = R.string.Build_type, buildType),
                                 style = MaterialTheme.typography.titleSmall
                             )
                         }
@@ -499,7 +529,7 @@ class MainActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.Start,
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(text = "Media", style = MaterialTheme.typography.titleLarge)
+                            Text(text = stringResource(id = R.string.Media), style = MaterialTheme.typography.titleLarge)
 
                             Column {
                                 Text(
@@ -557,7 +587,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
-                    
+
                     OutlinedCard(
                         onClick = { /* 点击事件处理 */ },
                         modifier = Modifier
@@ -571,7 +601,7 @@ class MainActivity : ComponentActivity() {
                             Text(text = "Widevine", style = MaterialTheme.typography.titleLarge)
                         }
                     }
-                    
+
                 }
             }
         }
