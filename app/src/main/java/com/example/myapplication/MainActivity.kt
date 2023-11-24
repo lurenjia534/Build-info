@@ -56,6 +56,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -512,6 +513,19 @@ class MainActivity : ComponentActivity() {
                         }
                         return false
                     }
+                    // Wide color gamut
+                    fun isWideColorGamut(context: Context): Boolean {
+                        val display = context.display
+                        return display?.isWideColorGamut ?: false
+                    }
+
+                    fun getScreenHz(context: Context): List<Int>? {
+                        val display = context.display
+                        val modes = display?.supportedModes
+                        val ref = modes?.map { it.refreshRate.roundToInt() }
+
+                        return ref?.distinct()?.sorted()
+                    }
 
                     OutlinedCard(
                         onClick = { /* 点击事件处理 */ },
@@ -582,6 +596,26 @@ class MainActivity : ComponentActivity() {
                                 )
                                 Text(
                                     text = "${getDolbyVision(LocalContext.current)}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "Wide olor gamut",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = "${isWideColorGamut(LocalContext.current)}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "Screen refresh rate",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = "${getScreenHz(LocalContext.current)}",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             }
