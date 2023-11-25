@@ -632,7 +632,21 @@ class MainActivity : ComponentActivity() {
                         colors = CardDefaults.outlinedCardColors(MaterialTheme.colorScheme.surface)
                     ) {
                         Column(modifier = Modifier.padding(24.dp)) {
-                            Text(text = "Widevine", style = MaterialTheme.typography.titleLarge)
+                            Column {
+                                Text(text = "Widevine", style = MaterialTheme.typography.titleLarge)
+                            }
+                            Column {
+                                Text(text = "Vendor", style = MaterialTheme.typography.titleMedium)
+                            }
+                            Column {
+                                Text(text = "Version", style = MaterialTheme.typography.titleMedium)
+                            }
+                            Column {
+                                Text(text = "DRM Level", style = MaterialTheme.typography.titleMedium)
+                            }
+                            Column {
+                                Text(text = "", style = MaterialTheme.typography.titleMedium)
+                            }
                         }
                     }
 

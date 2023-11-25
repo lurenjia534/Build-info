@@ -34,7 +34,7 @@ jobs:
         run: |
           ./gradlew assembleDebug
 
-      - name: RUn tests
+      - name: run tests
         run: |
           ./gradlew testDebugUnitTest
 
