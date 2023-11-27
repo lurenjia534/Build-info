@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Context
 import android.media.MediaCodecList
+import android.media.MediaDrm
 import android.os.Build
 import android.os.Bundle
 import android.view.Display
@@ -56,6 +57,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.util.UUID
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
@@ -621,6 +623,24 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
+                    val uuid = UUID.fromString("edef8ba9-79d6-4ace-a3c8-27dcd51d21ed")
+
+                    fun getWidevineVendor(): String {
+                        val mediaDrm = MediaDrm(uuid)
+                        return mediaDrm.getPropertyString(MediaDrm.PROPERTY_VENDOR)
+                    }
+
+                    fun getWidevineVersion(): String {
+                        val mediaDrm = MediaDrm(uuid)
+                        return mediaDrm.getPropertyString(MediaDrm.PROPERTY_VERSION)
+                    }
+
+                    fun getWidevineLevel(): String {
+                        val mediaDrm = MediaDrm(uuid)
+                        return mediaDrm.getPropertyString("securityLevel")
+                    }
+
+
 
                     OutlinedCard(
                         onClick = { /* 点击事件处理 */ },
@@ -637,12 +657,15 @@ class MainActivity : ComponentActivity() {
                             }
                             Column {
                                 Text(text = "Vendor", style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${getWidevineVendor()}", style = MaterialTheme.typography.bodyMedium)
                             }
                             Column {
                                 Text(text = "Version", style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${getWidevineVersion()}",)
                             }
                             Column {
                                 Text(text = "DRM Level", style = MaterialTheme.typography.titleMedium)
+                                Text(text = "${getWidevineLevel()}")
                             }
                             Column {
                                 Text(text = "", style = MaterialTheme.typography.titleMedium)
