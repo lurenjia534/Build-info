@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.lurenjia534.buildinfo
 
 import android.content.Context
 import android.media.MediaCodecList
@@ -52,7 +52,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.R
+import com.lurenjia534.buildinfo.ui.theme.MyApplicationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.io.BufferedReader
 import java.io.IOException
