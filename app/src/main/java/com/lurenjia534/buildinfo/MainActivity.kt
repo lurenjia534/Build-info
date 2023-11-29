@@ -11,6 +11,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
@@ -32,7 +36,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -44,7 +51,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
@@ -53,8 +59,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
-import com.lurenjia534.buildinfo.ui.theme.MyApplicationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.lurenjia534.buildinfo.ui.theme.MyApplicationTheme
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -72,20 +78,51 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.surface
                 ) {
-                    AppUI(color = MaterialTheme.colorScheme.primaryContainer)
+                    // AppUI(color = MaterialTheme.colorScheme.primaryContainer)
+                    UI()
                 }
+            }
+        }
+    }
+
+    @Composable
+    fun UI() {
+        val items = listOf("Home", "Info", "About")
+        val selectedItem = remember { mutableStateOf("Info") }
+        val icons = listOf(Icons.Default.Home, Icons.Default.Build, Icons.Default.Create)
+        val context = LocalContext.current
+
+        Scaffold(
+            bottomBar = {
+                NavigationBar {
+                    items.forEachIndexed { index, item ->
+                        NavigationBarItem(
+                            icon = { Icon(icons[index], contentDescription = null) },
+                            label = { Text(item) },
+                            selected = selectedItem.value == item,
+                            onClick = { selectedItem.value = item }
+                        )
+                    }
+                }
+            }
+        ) { paddingValues ->
+            // 使用 paddingValues 参数为 AppUI 提供内部边距
+            when (selectedItem.value) {
+                "Home" -> Text("Content for null")
+                "Info" -> AppUI(paddingValues) // 当选中 "test1" 时，显示 AppUI
+                "About" -> Text("Content for About")
             }
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun AppUI(color: Color) {
+    fun AppUI(paddingValues: PaddingValues) {
         MaterialTheme {
             Surface {
                 val systemUiController = rememberSystemUiController()
                 SideEffect {
-                    systemUiController.setSystemBarsColor(color)
+                    // systemUiController.setSystemBarsColor()
                 }
                 Column(
                     modifier = Modifier
@@ -516,6 +553,7 @@ class MainActivity : ComponentActivity() {
                         }
                         return false
                     }
+
                     // Wide color gamut
                     fun isWideColorGamut(context: Context): Boolean {
                         val display = context.display
@@ -546,7 +584,10 @@ class MainActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.Start,
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(text = stringResource(id = R.string.Media), style = MaterialTheme.typography.titleLarge)
+                            Text(
+                                text = stringResource(id = R.string.Media),
+                                style = MaterialTheme.typography.titleLarge
+                            )
 
                             Column {
                                 Text(
@@ -658,14 +699,20 @@ class MainActivity : ComponentActivity() {
                             }
                             Column {
                                 Text(text = "Vendor", style = MaterialTheme.typography.titleMedium)
-                                Text(text = "${getWidevineVendor()}", style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    text = "${getWidevineVendor()}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                             Column {
                                 Text(text = "Version", style = MaterialTheme.typography.titleMedium)
-                                Text(text = "${getWidevineVersion()}",)
+                                Text(text = "${getWidevineVersion()}")
                             }
                             Column {
-                                Text(text = "DRM Level", style = MaterialTheme.typography.titleMedium)
+                                Text(
+                                    text = "DRM Level",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
                                 Text(text = "${getWidevineLevel()}")
                             }
                             Column {
@@ -679,5 +726,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
