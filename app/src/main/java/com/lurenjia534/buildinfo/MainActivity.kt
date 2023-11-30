@@ -51,6 +51,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
@@ -90,7 +91,7 @@ class MainActivity : ComponentActivity() {
         val items = listOf("Home", "Info", "About")
         val selectedItem = remember { mutableStateOf("Info") }
         val icons = listOf(Icons.Default.Home, Icons.Default.Build, Icons.Default.Create)
-        val context = LocalContext.current
+       // val context = LocalContext.current
 
         Scaffold(
             bottomBar = {
@@ -108,9 +109,37 @@ class MainActivity : ComponentActivity() {
         ) { paddingValues ->
             // 使用 paddingValues 参数为 AppUI 提供内部边距
             when (selectedItem.value) {
-                "Home" -> Text("Content for null")
+                "Home" -> safety(paddingValues)
                 "Info" -> AppUI(paddingValues) // 当选中 "test1" 时，显示 AppUI
                 "About" -> Text("Content for About")
+            }
+        }
+    }
+
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun safety(paddingValues: PaddingValues) {
+        MaterialTheme {
+            Surface {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            Text(
+                                text = "Safety Info",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.titleLarge
+                            )
+
+                        },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                    )
+
+                }
             }
         }
     }
@@ -122,7 +151,7 @@ class MainActivity : ComponentActivity() {
             Surface {
                 val systemUiController = rememberSystemUiController()
                 SideEffect {
-                    // systemUiController.setSystemBarsColor()
+                    systemUiController.setSystemBarsColor(color = Color.Black)
                 }
                 Column(
                     modifier = Modifier
