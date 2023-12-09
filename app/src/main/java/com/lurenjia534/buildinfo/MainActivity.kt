@@ -111,11 +111,24 @@ class MainActivity : ComponentActivity() {
             when (selectedItem.value) {
                 "Home" -> safety(paddingValues)
                 "Info" -> AppUI(paddingValues) // 当选中 "test1" 时，显示 AppUI
-                "About" -> Text("Content for About")
+                "About" -> aboutPage(paddingValues)
             }
         }
     }
 
+
+@Composable
+fun aboutPage(paddingValues: PaddingValues){
+    MaterialTheme{
+        Surface {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())) {
+
+            }
+        }
+    }
+}
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
