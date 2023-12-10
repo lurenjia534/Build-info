@@ -9,6 +9,7 @@ import android.view.Display
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,8 +17,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -26,9 +29,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,7 +65,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.myapplication.R
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.lurenjia534.buildinfo.ui.theme.MyApplicationTheme
@@ -91,7 +100,7 @@ class MainActivity : ComponentActivity() {
         val items = listOf("Home", "Info", "About")
         val selectedItem = remember { mutableStateOf("Info") }
         val icons = listOf(Icons.Default.Home, Icons.Default.Build, Icons.Default.Create)
-       // val context = LocalContext.current
+        // val context = LocalContext.current
 
         Scaffold(
             bottomBar = {
@@ -117,18 +126,51 @@ class MainActivity : ComponentActivity() {
     }
 
 
-@Composable
-fun aboutPage(paddingValues: PaddingValues){
-    MaterialTheme{
-        Surface {
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())) {
-
+    @Composable
+    fun aboutPage(paddingValues: PaddingValues) {
+        MaterialTheme {
+            Surface {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.surface)
+                                .padding(16.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "About",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "这里是消息内容，这段文字描述了消息的主要内容...",
+                                style = MaterialTheme.typography.bodyMedium,
+                                lineHeight = 20.sp
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Row {
+                                Spacer(modifier = Modifier.width(8.dp))
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-}
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -172,7 +214,6 @@ fun aboutPage(paddingValues: PaddingValues){
                         .verticalScroll(rememberScrollState())
 
                 ) {
-                    val showCardDialog = remember { mutableStateOf(false) } // 关于页面
                     CenterAlignedTopAppBar(
                         title = {
                             Text(
@@ -188,60 +229,10 @@ fun aboutPage(paddingValues: PaddingValues){
                             }
                         },
                         actions = {
-                            IconButton(
-                                onClick = { showCardDialog.value = true },
-                                colors = IconButtonDefaults.iconButtonColors(MaterialTheme.colorScheme.surface),
-                                modifier = Modifier.clip(RoundedCornerShape(64.dp))
-                            ) {
-                                Icon(
-                                    imageVector = Icons.TwoTone.Favorite,
-                                    contentDescription = null,
-                                )
-                            }
+
                         }
                     )
 
-                    if (showCardDialog.value) {
-                        AlertDialog(
-                            onDismissRequest = { showCardDialog.value = false },
-                            title = {
-                                Text(
-                                    stringResource(id = R.string.About),
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-                            },
-                            text = {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically, // 行容器中内容垂直居中
-                                    horizontalArrangement = Arrangement.Center // 行容器中内容水平居中
-                                ) {
-                                    Spacer(modifier = Modifier.padding(5.dp))
-                                    Image(
-                                        painter = painterResource(id = R.drawable.unnamed),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(50.dp)
-                                            .clip(CircleShape)
-
-                                    )
-                                    Spacer(modifier = Modifier.padding(5.dp))
-                                    Text(
-                                        text = stringResource(id = R.string.Maintainer),
-                                        style = MaterialTheme.typography.bodySmall,
-
-                                        )
-                                }
-                            },
-                            containerColor = MaterialTheme.colorScheme.surface,
-                            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            textContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            confirmButton = {
-                                TextButton(onClick = { showCardDialog.value = false }) {
-                                    Text("Ok", style = MaterialTheme.typography.bodyMedium)
-                                }
-
-                            })
-                    }
 
                     fun getCpuInfo(): String {
                         try {
@@ -270,8 +261,7 @@ fun aboutPage(paddingValues: PaddingValues){
                     val cpuInfo = remember { mutableStateOf(false) }
 
                     fun get32abis(): Boolean {
-                        val abis32 = Build.SUPPORTED_32_BIT_ABIS.joinToString(separator = ", ")
-                        return abis32 != null
+                        return Build.SUPPORTED_32_BIT_ABIS.isNotEmpty()
                     }
 
                     fun copyText(text: String, clipboardManager: ClipboardManager) {
