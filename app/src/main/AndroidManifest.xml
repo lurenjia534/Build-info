@@ -12,7 +12,9 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
-        tools:targetApi="34">
+        tools:targetApi="34"
+        android:enableOnBackInvokedCallback="true"
+        >
         <activity
             android:name="com.lurenjia534.buildinfo.MainActivity"
             android:exported="true"
