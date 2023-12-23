@@ -6,10 +6,13 @@ import android.media.MediaDrm
 import android.os.Build
 import android.os.Bundle
 import android.view.Display
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -50,6 +53,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
@@ -58,6 +62,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
 import com.example.myapplication.R
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.lurenjia534.buildinfo.ui.theme.MyApplicationTheme
@@ -70,18 +75,43 @@ import kotlin.math.roundToInt
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //  WindowCompat.setDecorFitsSystemWindows(window, false)
-
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
+            val systemUiController = rememberSystemUiController()
+            val useDarkIcons = MaterialTheme.colorScheme.onBackground.luminance() > 0.5
+
+            SideEffect {
+                systemUiController.setSystemBarsColor(
+                    color = Color.Red,
+                    darkIcons = useDarkIcons
+                )
+            }
             MyApplicationTheme {
+
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    color = MaterialTheme.colorScheme.surface
-                ) {
-                    // AppUI(color = MaterialTheme.colorScheme.primaryContainer)
+                Box(modifier = Modifier.fillMaxSize()) {
                     UI()
                 }
             }
+        }
+        window.insetsController?.apply {
+            hide(WindowInsets.Type.systemBars())
+            systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+        hideSystemBars()
+    }
+    private fun hideSystemBars() {
+        // Enables regular immersive mode.
+        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
+        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        window.insetsController?.let { controller ->
+            // Hide both the status bar and the navigation bar
+            controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+            controller.systemBarsBehavior =
+                WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
 
