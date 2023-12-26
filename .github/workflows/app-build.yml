@@ -39,7 +39,7 @@ jobs:
           ./gradlew testDebugUnitTest
 
       - name: upload apk
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.0.0
         with:
           name: app-debug.apk
           path: app/build/outputs/apk/debug/app-debug.apk
