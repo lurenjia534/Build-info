@@ -109,6 +109,7 @@ class MainActivity : ComponentActivity() {
         registerScreenCaptureCallback(mainExecutor, screenCaptureCallback)
     }
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onStop() {
         super.onStop()
         unregisterScreenCaptureCallback(screenCaptureCallback)
