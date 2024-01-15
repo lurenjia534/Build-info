@@ -1,5 +1,6 @@
 package com.lurenjia534.buildinfo
 
+import android.app.Activity
 import android.content.Context
 import android.media.MediaCodecList
 import android.media.MediaDrm
@@ -10,6 +11,7 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -73,6 +75,7 @@ import java.util.UUID
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
+    private val screenCaptureCallback = Activity.ScreenCaptureCallback {}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -99,9 +102,16 @@ class MainActivity : ComponentActivity() {
             systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onStart() {
         super.onStart()
         hideSystemBars()
+        registerScreenCaptureCallback(mainExecutor, screenCaptureCallback)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterScreenCaptureCallback(screenCaptureCallback)
     }
     private fun hideSystemBars() {
         // Enables regular immersive mode.
