@@ -102,14 +102,12 @@ class MainActivity : ComponentActivity() {
             systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onStart() {
         super.onStart()
         hideSystemBars()
         registerScreenCaptureCallback(mainExecutor, screenCaptureCallback)
     }
 
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onStop() {
         super.onStop()
         unregisterScreenCaptureCallback(screenCaptureCallback)
@@ -782,6 +780,7 @@ class MainActivity : ComponentActivity() {
                                 Text(text = "", style = MaterialTheme.typography.titleMedium)
                             }
                         }
+                        Spacer(modifier = Modifier.height(50.dp))
                     }
 
                 }
