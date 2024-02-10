@@ -1,6 +1,5 @@
 package com.lurenjia534.buildinfo
 
-import android.app.Activity
 import android.content.Context
 import android.media.MediaCodecList
 import android.media.MediaDrm
@@ -74,7 +73,7 @@ import java.util.UUID
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
-    private val screenCaptureCallback = Activity.ScreenCaptureCallback {}
+    private val screenCaptureCallback = ScreenCaptureCallback {}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -146,16 +145,16 @@ class MainActivity : ComponentActivity() {
         ) { paddingValues ->
             // 使用 paddingValues 参数为 AppUI 提供内部边距
             when (selectedItem.value) {
-                "Home" -> safety(paddingValues)
+                "Home" -> Safety(paddingValues)
                 "Info" -> AppUI(paddingValues) // 当选中 "test1" 时，显示 AppUI
-                "About" -> aboutPage(paddingValues)
+                "About" -> AboutPage(paddingValues)
             }
         }
     }
 
 
     @Composable
-    fun aboutPage(paddingValues: PaddingValues) {
+    fun AboutPage(paddingValues: PaddingValues) {
         MaterialTheme {
             Surface {
                 Column(
@@ -202,7 +201,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun safety(paddingValues: PaddingValues) {
+    fun Safety(paddingValues: PaddingValues) {
         MaterialTheme {
             Surface {
                 Column(
